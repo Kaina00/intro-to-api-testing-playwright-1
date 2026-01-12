@@ -84,7 +84,7 @@ test('post order with correct data should receive code 400', async ({ request })
 
 test('get test order time without headers, should received an error', async ({ request }) => {
   // Send a GET request to the server
-  const response = await request.put('https://backend.tallinn-learning.ee/test-orders/time/1', {})
+  const response = await request.get('https://backend.tallinn-learning.ee/test-orders/time/1', {})
   // Log the response status and body
   console.log('response status:', response.status())
   console.log('response body:', await response.json())
