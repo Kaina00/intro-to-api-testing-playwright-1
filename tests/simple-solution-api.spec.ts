@@ -1,92 +1,73 @@
 import { expect, test } from '@playwright/test'
-
 import { StatusCodes } from 'http-status-codes'
 
-test('get order with correct id should receive code 200', async ({ request }) => {
-  // Build and send a GET request to the server
-  const response = await request.get('https://backend.tallinn-learning.ee/test-orders/1')
-  // Log the response status, body and headers
-  console.log('response body:', await response.json())
-  console.log('response headers:', response.headers())
-  // Check if the response status is 200
-  expect(response.status()).toBe(200)
-})
+  // Test GET - Get Order Details
 
-test('get order with correct id should receive code 400', async ({ request }) => {
-  // Build and send a GET request to the server
-  const response = await request.get('https://backend.tallinn-learning.ee/test-orders/-5')
-  // Log the response status, body and headers
-  console.log('response body:', await response.json())
-  console.log('response headers:', response.headers())
-  // Check if the response status is 400
-  expect(response.status()).toBe(400)
-})
-
-test('post order with correct data should receive code 201', async ({ request }) => {
-  // prepare request body
-  const requestBody = {
-    status: 'OPEN',
-    courierId: 0,
-    customerName: 'string',
-    customerPhone: 'string',
-    comment: 'string',
-    id: 0,
-  }
-  // Send a POST request to the server
-  const response = await request.post('https://backend.tallinn-learning.ee/test-orders', {
-    data: requestBody,
-  })
-  // Log the response status and body
-  console.log('response status:', response.status())
-  console.log('response body:', await response.json())
+test('GET - Order with valid ID, return 200', async ({request}) => {
+  const response = await request.get('https://backend.tallinn-learning.ee/test-orders/5')
   expect(response.status()).toBe(StatusCodes.OK)
 })
 
-test('post order with the correct data, should receive code 400', async ({ request }) => {
-  // prepare request body
-  const requestBody = {
-    status: '123',
-    courierId: 0,
-    // customerName: 'string',
-    customerPhone: 'string',
-    comment: 'string',
-    id: 0,
-  }
-  // Send a POST request to the server
-  const response = await request.post('https://backend.tallinn-learning.ee/test-orders', {
-    data: requestBody,
-  })
-  // Log the response status and body
-  console.log('response status:', response.status())
-  // console.log('response body:', await response.json())
-  expect(response.status()).not.toBe(StatusCodes.OK)
+test('GET - Order with invalid ID, return 400', async ({request}) => {
+  const response = await request.get('https://backend.tallinn-learning.ee/test-orders/0')
+  expect(response.status()).toBe(StatusCodes.BAD_REQUEST)
 })
 
-test('post order with correct data should receive code 400', async ({ request }) => {
-  // prepare request body
-  const requestBody = {
-    status: '123',
-    courierId: 0,
-    // customerName: 'string',
-    customerPhone: 'string',
-    comment: 'string',
-    id: 0,
-  }
-  // Send a POST request to the server
-  const response = await request.post('https://backend.tallinn-learning.ee/test-orders', {
-    data: requestBody,
-  })
-  // Log the response status and body
-  console.log('response status:', response.status())
-  // console.log('response body:', await response.json())
-  expect(response.status()).not.toBe(StatusCodes.OK)
+test('GET - Test order time without headers, return 400', async ({request}) => {
+  const response = await request.get('https://backend.tallinn-learning.ee/test-orders/time/5')
+  expect(response.status()).toBe(StatusCodes.BAD_REQUEST)
 })
 
-test('get test order time without headers, should received an error', async ({ request }) => {
-  // Send a GET request to the server
-  const response = await request.get('https://backend.tallinn-learning.ee/test-orders/time/1', {})
-  // Log the response status and body
-  console.log('response status:', response.status())
-  console.log('response body:', await response.json())
+  // Test PUT - Update Existing Order
+
+test('PUT - Update with valid ID and valid API key, return 200', async ({request}) => {
+  const response = await request.put('https://backend.tallinn-learning.ee/test-orders/7', {
+    headers: { api_key: '8952144734165486'},
+    data: {status: 'OPEN'},
+  })
+  expect(response.status()).toBe(StatusCodes.OK)
+})
+
+test('PUT - Update without API key, return 400', async ({request}) => {
+  const response = await request.put('https://backend.tallinn-learning.ee/test-orders/7', {
+    data: {status: 'OPEN'},
+  })
+  expect(response.status()).toBe(StatusCodes.BAD_REQUEST)
+})
+
+test('PUT - Update with invalid API key, return 401', async ({request}) => {
+  const response = await request.put('https://backend.tallinn-learning.ee/test-orders/7', {
+    headers: {api_key: '5484964'},
+    data: {status: 'OPEN'},
+  })
+  expect(response.status()).toBe(StatusCodes.UNAUTHORIZED)
+})
+
+test('PUT - Update order with empty request body, return 400', async ({request}) => {
+  const response = await request.put('https://backend.tallinn-learning.ee/test-orders/7', {
+    headers: {api_key: '8952144734165486'},
+  })
+  expect(response.status()).toBe(StatusCodes.BAD_REQUEST)
+})
+
+test('PUT - Update order with invalid ID, return 400', async ({request}) => {
+  const response = await request.put('https://backend.tallinn-learning.ee/test-orders/57', {
+    headers: {api_key: '8952144734165486'},
+    data: {status: 'OPEN'},
+  })
+  expect(response.status()).toBe(StatusCodes.BAD_REQUEST)
+})
+
+// Test DELETE - Delete Order
+
+test('DELETE - Order without API key, return 400', async ({request}) => {
+  const response = await request.delete('https://backend.tallinn-learning.ee/test-orders/57')
+    expect(response.status()).toBe(StatusCodes.BAD_REQUEST)
+})
+
+test('DELETE - Order with invalid ID, return 400', async ({request}) => {
+  const response = await request.delete('https://backend.tallinn-learning.ee/test-orders/57', {
+    headers: {api_key: '8952144734165486'},
+  })
   expect(response.status()).toBe(StatusCodes.BAD_REQUEST)
 })
