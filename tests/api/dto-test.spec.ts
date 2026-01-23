@@ -1,8 +1,22 @@
-import {test} from '@playwright/test'
-import {OrderDTO} from '../dto/OrderDTO'
+import { expect, test } from '@playwright/test'
+import {OrderDto} from '../dto/OrderDto'
 
-test('DTO test', async ({request}) => {
-  const requestBody = OrderDTO.createOrderDto()
+test('Dto test', async ({request}) => {
+  const requestBody = OrderDto.createOrderWithRandomData()
+ // console.log(requestBody)
 
-  console.log(requestBody)
+  const response = await request.post ('https://backend.tallinn-learning.ee/test-orders', {
+    data: requestBody
+  })
+  await expect(response).toBeOK()
+  const responseBody = await response.json()
+  console.log(responseBody)
+
+  expect.soft(responseBody.status).toBe('OPEN')
+  expect.soft(responseBody.customerName).toBe(requestBody.customerName)
+  expect.soft(responseBody.courierId).toBe(requestBody.courierId)
+  expect.soft(responseBody.customerPhone).toBe(requestBody.customerPhone)
+  expect.soft(responseBody.comment).toBe(requestBody.comment)
+  expect.soft(responseBody.id).toBeGreaterThanOrEqual(0)
+
 })
