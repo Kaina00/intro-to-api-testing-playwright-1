@@ -21,7 +21,7 @@ test('should be able to login with correct creditentials ', async ({ request }) 
   const orderResponse = await request.post('https://backend.tallinn-learning.ee/orders', {
     headers: {
       Authorization: `Bearer ${token}`,
-    }
+    },
   })
   expect(response.status()).toBe(200)
 })
