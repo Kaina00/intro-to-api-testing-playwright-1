@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 import { StatusCodes } from 'http-status-codes'
-import { LoanDecisionRequestDto } from '../../src/dto/LoanDecisionDto'
+import { LoanDecisionRequestDto } from '../dto/LoanDecisionDto'
 
 test.describe('Invalid Input ', () => {
   test('400 - invalid input: underage', async ({ request }) => {

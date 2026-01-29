@@ -24,6 +24,8 @@ Checklist based on the implemented Playwright API tests.
 |----|------------------------------|-----------------|--------|
 | 9  | Delete order without API key | 400 Bad Request | ✅ Done |
 | 10 | Delete order with invalid ID | 400 Bad Request | ✅ Done |
+
+
 # Checklist for API Testing - Homework 11
 
 Checklist based on the implemented Playwright API tests.
@@ -59,9 +61,22 @@ Checklist based on the implemented Playwright API tests.
 | 14 | riskLevel                    | 'High Risk'     | ✅ Done |
 | 15 | riskPeriod                   | [3, 6 ]         | ✅ Done |
 
+# Negative Decision - Very High Risk
 # Negative Decision - Very High Risk 
 | No | Scenario                     | Expected Status  | Status |
 |----|------------------------------|------------------|--------|
 | 12 | High Risk, Positive decision | 200 OK           | ✅ Done |
 | 13 | riskDecision                 | 'negative'       | ✅ Done |
 | 14 | riskLevel                    | 'Very High Risk' | ✅ Done |
+
+
+# API Test Scenarios for homework 12
+
+Checklist based on the implemented Playwright API tests.
+
+| No | Scenario                           | Expected Status                         | Status |
+|----|------------------------------------|-----------------------------------------|--------|
+| 15 | Valid credentials return JWT       | expect.soft(jwtValue).toMatch(jwtRegex) | ✅ Done |
+| 16 | Incorrect method, GET instead POST | METHOD_NOT_ALLOWED, BAD_REQUEST         | ✅ Done |
+| 17 | Incorrect method, wrong password   | UNAUTHORIZED                            | ✅ Done |
+| 18 | Invalid body structure             | BAD_REQUEST, UNAUTHORIZED               | ✅ Done |
