@@ -62,6 +62,7 @@ Checklist based on the implemented Playwright API tests.
 | 15 | riskPeriod                   | [3, 6 ]         | ✅ Done |
 
 # Negative Decision - Very High Risk
+# Negative Decision - Very High Risk 
 | No | Scenario                     | Expected Status  | Status |
 |----|------------------------------|------------------|--------|
 | 12 | High Risk, Positive decision | 200 OK           | ✅ Done |
